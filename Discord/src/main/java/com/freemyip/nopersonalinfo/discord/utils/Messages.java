@@ -1,4 +1,4 @@
-package com.freemyip.nopersonalinfo.discord.commands;
+package com.freemyip.nopersonalinfo.discord.utils;
 
 import net.dv8tion.jda.api.entities.Emote;
 import net.dv8tion.jda.api.entities.Guild;
@@ -6,35 +6,29 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class Commands {
-    private Commands(){
-        throw new AssertionError();
-    }
-    private static Map<String,Command> commandMap;
-    private static Map<List<String>,String> aliasMap;
-    static{
-        commandMap = new HashMap<>();
-        aliasMap = commandMap.values().stream().collect(Collectors.toMap(cmd -> cmd.alias(),cmd -> cmd.callName()));
-    }
-    public static Optional<Command> tryGet(String byName){
-        if(commandMap.containsKey(byName)){
-            return Optional.of(commandMap.get(byName));
-        }
-        if(aliasMap.keySet().stream().flatMap(list -> list.stream()).anyMatch(str -> str.equals(byName))){
-            return Optional.of(commandMap.get(aliasMap.entrySet().stream().filter(ent -> ent.getKey().contains(byName)).findFirst().map(ent -> ent.getValue()).get()));
-        }else{
-            return Optional.empty();
-        }
-    }
+/**
+ * A utility class for sending messages.
+ */
+public class Messages {
+    /**
+     * Queues a message to be sent.
+     * This is a convenience method for {@link Messages#sendMessage(TextChannel, String)}.
+     * @param evt The message received event, from which a text channel can be derived
+     * @param msg The message to send
+     */
     public static void sendMessage(GuildMessageReceivedEvent evt, String msg){
         sendMessage(evt.getChannel(),msg);
     }
+
+    /**
+     * Queues a message to be sent.
+     * @param text The text channel to send to
+     * @param msg The message to send
+     */
     public static void sendMessage(TextChannel text, String msg){
         if(msg.length() > 1990){
             boolean isCode = false, isFirst = true;
@@ -61,15 +55,41 @@ public class Commands {
             text.sendMessage(msg).queue();
         }
     }
+
+    /**
+     * Queues an embed to be sent.
+     * @param text The message received event, from which a text channel can be derived
+     * @param toSend The embed to send
+     */
     public static void sendMessage(TextChannel text, MessageEmbed toSend){
         text.sendMessage(toSend).queue();
     }
+
+    /**
+     * Queues an embed to be sent.
+     * This is a convenience method for {@link Messages#sendMessage(TextChannel, MessageEmbed)}.
+     * @param evt The message received event, from which a text channel can be derived
+     * @param toSend The embed to send
+     */
     public static void sendMessage(GuildMessageReceivedEvent evt, MessageEmbed toSend){
         sendMessage(evt.getChannel(),toSend);
     }
+
+    /**
+     * Gets a emotes by its name for the specified guild.
+     * @param name The name of the emote to retrieve
+     * @param retrieve The guild to get the emote for
+     * @return An optional containing the emote if it can be found, or an empty optional otherwise
+     */
     public static Optional<Emote> getEmote(String name, Guild retrieve){
         return retrieve.getEmotesByName(name,true).stream().findFirst();
     }
+
+    /**
+     * Converts numbers and digits only to a suitable unicode for use in Discord.
+     * @param c The character to convert
+     * @return The unicode String
+     */
     public static String toUnicode(char c){
         if (Character.isDigit(c)) {
             return "U+00" + Long.toHexString((int) c);
@@ -77,11 +97,14 @@ public class Commands {
             return "U+1F1" + Long.toHexString(((int) c) - 97 + 0xE6);
         }
     }
+
+    /**
+     * Converts numbers and digits only to a suitable unicode for use in Discord.
+     * @param split The string to convert
+     * @return The unicode String
+     */
     public static List<String> toUnicode(String split){
         return split.toLowerCase().chars().mapToObj(i -> toUnicode((char) i)).collect(Collectors.toList());
     }
-    public static void addCommand(Command cmd){
-        commandMap.put(cmd.callName(),cmd);
-        aliasMap.put(cmd.alias(), cmd.callName());
-    }
+
 }

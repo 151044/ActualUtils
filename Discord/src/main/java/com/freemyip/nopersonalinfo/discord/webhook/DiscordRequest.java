@@ -30,5 +30,8 @@ public class DiscordRequest {
     private static HttpRequest makeRequest(URI uri,String content){
         return HttpRequest.newBuilder(uri).setHeader("Content-Type","application/json").POST(HttpRequest.BodyPublishers.ofString("{\n\t\"content\":\"" + content + "\"\n}")).build();
     }
+    public String getContent(){
+        return content;
+    }
 }
 
