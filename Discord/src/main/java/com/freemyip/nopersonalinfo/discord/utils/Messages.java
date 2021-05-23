@@ -30,6 +30,9 @@ public class Messages {
      * @param msg The message to send
      */
     public static void sendMessage(TextChannel text, String msg){
+        if(msg.isBlank()){
+            return;
+        }
         if(msg.length() > 1990){
             boolean isCode = false, isFirst = true;
             if(msg.endsWith("```")){

@@ -16,7 +16,7 @@ class DiscordRequestTest {
         DiscordRequest request = new DiscordRequest(URI.create(testWebhook),"Constructor content.");
         HttpResponse<String> res = request.send();
         Assertions.assertTrue(res.statusCode() >= 200 && res.statusCode() < 300);
-        for(String s : List.of("In content setter.","î¨èå¼ë·¯â¦¥ë£¯î¢»ê®é¢îè","<@586790522157531136>")) {
+        for(String s : List.of("In content setter.","î¨èå¼ë·¯â¦¥ë£¯î¢»ê®é¢îè","<@&727106081809104917>")) {
             request.setContent(s);
             res = request.send();
             Assertions.assertTrue(res.statusCode() >= 200 && res.statusCode() < 300);
