@@ -1,2 +1,8 @@
 rootProject.name = 'ActualUtils'
+include 'Discord'
+include 'DBus'
+include 'Linux'
+include 'DBus'
+include 'DBus'
+include 'MPD'
 
