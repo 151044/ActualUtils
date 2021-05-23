@@ -80,4 +80,8 @@ public class Commands {
     public static List<String> toUnicode(String split){
         return split.toLowerCase().chars().mapToObj(i -> toUnicode((char) i)).collect(Collectors.toList());
     }
+    public static void addCommand(Command cmd){
+        commandMap.put(cmd.callName(),cmd);
+        aliasMap.put(cmd.alias(), cmd.callName());
+    }
 }
