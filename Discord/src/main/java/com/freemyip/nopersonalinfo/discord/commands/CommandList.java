@@ -32,4 +32,12 @@ public class CommandList {
         }
     }
 
+    /**
+     * Adds a command to this command list.
+     * @param toAdd The command to add
+     */
+    public void addCommand(Command toAdd){
+        commandMap.put(toAdd.callName(), toAdd);
+        aliasMap.put(toAdd.alias(), toAdd.callName());
+    }
 }
