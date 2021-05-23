@@ -7,23 +7,49 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Helper class for creating embeds.
+ */
 public class EmbedHelper {
     private static String author = "Default";
 
     private EmbedHelper(){
         throw new AssertionError();
     }
+
+    /**
+     * Sets the author of the embeds created.
+     * @param author The author string to set
+     */
     public static void setAuthor(String author){
         EmbedHelper.author = author;
     }
 
+    /**
+     * Gets the author of the embeds created.
+     * @return The author string
+     */
     public static String getAuthor() {
         return author;
     }
 
+    /**
+     * Creates an embed with the specified description and title.
+     * @param desc The description to set
+     * @param title The title to set
+     * @return The created embed
+     */
     public static MessageEmbed getEmbed(String desc, String title){
         return new EmbedBuilder().setAuthor(author).setColor(Color.CYAN).setDescription(desc).setTitle(title).build();
     }
+
+    /**
+     * Creates one or more embeds with a given input string.
+     * If {@param desc} is too long such that it cannot be sent in one message, it will be split up onto multiple embeds.
+     * @param desc The description to send
+     * @param title The title to send
+     * @return The created embed(s)
+     */
     public static List<MessageEmbed> getLongEmbed(String desc,String title){
         List<MessageEmbed> ret = new ArrayList<>();
         boolean isFirst = true;
@@ -37,17 +63,5 @@ public class EmbedHelper {
         }
         ret.add(new EmbedBuilder().setAuthor(author).setColor(Color.CYAN).setDescription(desc).setTitle(isFirst ? title : title + "(Continued)").build());
         return ret;
-    }
-    public static String toTime(long length){
-        long seconds = length / 1000;
-        long min = seconds / 60;
-        long hour = min / 60;
-        String sec = seconds % 60 < 10 ? "0" + seconds % 60 : seconds % 60 + "";
-        String mins = min % 60 < 10 ? "0" + min % 60 : min % 60 + "";
-        if(hour == 0){
-            return min + ":" + sec;
-        }else{
-            return hour + ":" + mins + ":" + sec;
-        }
     }
 }

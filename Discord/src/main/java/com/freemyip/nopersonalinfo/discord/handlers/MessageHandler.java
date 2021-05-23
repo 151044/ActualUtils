@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 
 /**
- * The handler for guild messages.
+ * A handler for guild messages.
  */
 public class MessageHandler extends ListenerAdapter {
     private String prefix;

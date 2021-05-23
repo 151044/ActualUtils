@@ -107,4 +107,21 @@ public class Messages {
         return split.toLowerCase().chars().mapToObj(i -> toUnicode((char) i)).collect(Collectors.toList());
     }
 
+    /**
+     * Converts a length of time, in milliseconds, to a string in the format of hh:mm:ss.
+     * @param length The time period to use
+     * @return The formatted time string
+     */
+    public static String toTime(long length){
+        long seconds = length / 1000;
+        long min = seconds / 60;
+        long hour = min / 60;
+        String sec = seconds % 60 < 10 ? "0" + seconds % 60 : seconds % 60 + "";
+        String mins = min % 60 < 10 ? "0" + min % 60 : min % 60 + "";
+        if(hour == 0){
+            return min + ":" + sec;
+        }else{
+            return hour + ":" + mins + ":" + sec;
+        }
+    }
 }
